@@ -19,6 +19,9 @@ target/
 *.iml
 *.ipr
 
+### AI ###
+.claude/
+
 ### VS Code ###
 .vscode/
 
