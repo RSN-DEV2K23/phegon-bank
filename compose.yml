@@ -1,0 +1,10 @@
+# Define the services and their configurations
+services:
+  app:
+    build: .
+    container_name: phegon-bank
+    ports:
+      - "8090:8090"
+    restart: unless-stopped
+    env_file:
+      - .env
