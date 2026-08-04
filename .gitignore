@@ -49,6 +49,7 @@ target/
 *.zip
 *.tar.gz
 *.rar
+uploads/
 
 # virtual machine crash logs
 hs_err_pid*

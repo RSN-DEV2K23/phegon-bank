@@ -1,5 +1,5 @@
 # Stage 1: to build the application
-FROM eclipse-temurin:21-jdk-alpine as build
+FROM eclipse-temurin:25-jdk-alpine as build
 
 # Set the working directory
 WORKDIR /app
@@ -13,7 +13,7 @@ COPY src ./src
 RUN mvn clean package -Dmaven.test.skip=true
 
 #Stage 2: to build a production image
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:25-jre-alpine
 WORKDIR /app
 
 #copy the final jar file from the build stage to the production image
