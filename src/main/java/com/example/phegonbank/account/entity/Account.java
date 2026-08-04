@@ -1,17 +1,20 @@
 package com.example.phegonbank.account.entity;
 
-import jakarta.annotation.Generated;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.example.phegonbank.auth_users.entity.User;
+import com.example.phegonbank.enums.AccountStatus;
+import com.example.phegonbank.enums.AccountType;
+import com.example.phegonbank.enums.Currency;
+import com.example.phegonbank.transaction.entity.Transaction;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data

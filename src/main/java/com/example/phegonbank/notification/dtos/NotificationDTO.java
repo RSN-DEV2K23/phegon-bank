@@ -1,13 +1,15 @@
 package com.example.phegonbank.notification.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.Map;
 
 @Data
 @Builder
@@ -24,8 +26,6 @@ public class NotificationDTO {
     private String type;
     private Long userId;
     private LocalDateTime createdAt;
-    // For values/variables to be used in the template, if applicable
     private String templateName;
     private Map<String, Object> templateVariables;
-
 }

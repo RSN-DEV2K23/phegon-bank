@@ -1,14 +1,18 @@
 package com.example.phegonbank.transaction.dtos;
 
 import com.example.phegonbank.account.dtos.AccountDTO;
+import com.example.phegonbank.enums.TransactionStatus;
+import com.example.phegonbank.enums.TransactionType;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -16,18 +20,16 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class TransactionDTO {
     private Long id;
     private BigDecimal amount;
-    private TransactionType transactiontype;
+    private TransactionType transactionType;
     private LocalDateTime transactionDate;
     private String description;
     private TransactionStatus status;
 
     @JsonBackReference
     private AccountDTO account;
-    //For transfer transactions
     private String sourceAccount;
     private String destinationAccount;
 }

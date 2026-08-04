@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class AuditorServiceImpl implements AuditorService {
+public class AuditorServicempl implements AuditorService {
     
     private final UserRepo userRepo;
     private final AccountRepo accountRepo;
@@ -67,11 +67,5 @@ public class AuditorServiceImpl implements AuditorService {
     public Optional<TransactionDTO> findTransactionById(Long transactionId) {
         return transactionRepo.findById(transactionId)
                 .map(transaction -> modelMapper.map(transaction, TransactionDTO.class));
-    }
-
-    @Override
-    public List<TransactionDTO> findTransactionByAccountNumber(String accountNumber) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findTransactionByAccountNumber'");
     }
 }

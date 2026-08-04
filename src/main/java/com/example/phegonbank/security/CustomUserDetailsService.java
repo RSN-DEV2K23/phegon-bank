@@ -1,14 +1,13 @@
 package com.example.phegonbank.security;
 
+import com.example.phegonbank.auth_users.entity.User;
+import com.example.phegonbank.auth_users.repo.UserRepo;
+import com.example.phegonbank.exceptions.NotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import com.example.phegonbank.auth_users.repo.UserRepo;
-import com.example.phegonbank.exceptions.NotFoundException;
-
-import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -18,11 +17,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user =userRepo.findByEmail(username)
-                .orElseThrow(()-> new NotFoundException("Email Not Found"));
+        User user = userRepo.findByEmail(username)
+                .orElseThrow(() -> new NotFoundException("Email Not Found"));
 
         return AuthUser.builder()
-                    .user(null)
-                    .build()
+                .user(user)
+                .build();
     }
 }

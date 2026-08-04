@@ -23,8 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-
-public class NotificationServiceImp implements NotificationService{
+public class NotificationServiceImp implements NotificationService {
 
     private final NotificationRepo notificationRepo;
     private final JavaMailSender mailSender;
@@ -32,45 +31,36 @@ public class NotificationServiceImp implements NotificationService{
 
     @Override
     @Async
-    public void sendEmail(NotificationDTO notificationDTO, User user){
-
+    public void sendEmail(NotificationDTO notificationDTO, User user) {
         try {
-            MimeMessage mimeMessage=mailSender.createMimeMessage();
-
-            MimeMessageHelper helper=new MimeMessageHelper(mimeMessage,MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,StandardCharsets.UTF_8.name());
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, StandardCharsets.UTF_8.name());
 
             helper.setTo(notificationDTO.getRecipient());
             helper.setSubject(notificationDTO.getSubject());
 
-            // Use Template if provided
-            if(notificationDTO.getTemplateName() !=null){
+            if (notificationDTO.getTemplateName() != null) {
                 Context context = new Context();
-                context.setVariable(notificationDTO.getTemplateVariables());
+                context.setVariables(notificationDTO.getTemplateVariables());
                 String htmlContent = templateEngine.process(notificationDTO.getTemplateName(), context);
-                helper.setText(notificationDTO.getBody(), html:true);
-            }else{
-
-                //if no template send text body directly
-                helper.setText(notificationDTO.getBody(),html:true);
+                helper.setText(htmlContent, true);
+            } else {
+                helper.setText(notificationDTO.getBody(), true);
             }
-            
+
             mailSender.send(mimeMessage);
 
-            //Save to our database table
             Notification notificationToSave = Notification.builder()
                     .recipient(notificationDTO.getRecipient())
-                    .Subject(notificationDTO.getSubject())
+                    .subject(notificationDTO.getSubject())
                     .body(notificationDTO.getBody())
-                    .type(NotificationType.EMAIL())
+                    .type(NotificationType.EMAIL)
                     .user(user)
-                    .build()
-            notificationRepo.save(notificationToSave)
+                    .build();
+            notificationRepo.save(notificationToSave);
 
         } catch (MessagingException e) {
             log.error(e.getMessage());
-            // TODO: handle exception
         }
-
     }
-
 }
