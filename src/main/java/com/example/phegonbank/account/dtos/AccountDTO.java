@@ -1,7 +1,19 @@
 package com.example.phegonbank.account.dtos;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.example.phegonbank.auth_users.dtos.UserDTO;
+import com.example.phegonbank.transaction.dtos.TransactionDTO;
+import com.example.phegonbank.enums.AccountStatus;
+import com.example.phegonbank.enums.AccountType;
+import com.example.phegonbank.enums.Currency;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
