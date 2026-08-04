@@ -19,14 +19,13 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/transactions")
 @RequiredArgsConstructor
-
 public class TransactionController {
 
     private final TransactionService transactionService;
 
     @PostMapping
-    public ResponseEntity<Response<?>> createTransaction(@RequestBody @Valid TransacctionRequest request){
-        return ResponseEntity.ok(TransactionService.createTransaction(request));
+    public ResponseEntity<Response<?>> createTransaction(@RequestBody @Valid TransactionRequest request) {
+        return ResponseEntity.ok(transactionService.createTransaction(request));
     }
 
     @GetMapping("/{accountNumber}")

@@ -1,6 +1,7 @@
 package com.example.phegonbank.audit_dashboard.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.example.phegonbank.account.dtos.AccountDTO;
@@ -14,5 +15,6 @@ public interface AuditorService {
     Optional<AccountDTO> findAccountDetailsByAccountNumber(String accountNumber);
     List<TransactionDTO> findTransactionByAccountNumber(String accountNumber);
     Optional<TransactionDTO> findTransactionById(Long transactionId);
+    List<TransactionDTO> findTransactionsByAccountNumber(String accountNumber);
 
 }
