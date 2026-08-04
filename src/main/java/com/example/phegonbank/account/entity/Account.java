@@ -16,6 +16,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 @Entity
 @Data
 @Builder
@@ -31,6 +34,7 @@ public class Account {
     @Column(nullable = false, unique = true, length = 15)
     private String accountNumber;
 
+    @Builder.Default
     @Column(nullable = false,precision = 19, scale = 2)
     private BigDecimal balance = BigDecimal.ZERO;
 
@@ -48,9 +52,16 @@ public class Account {
     @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
 
+    @Builder.Default
     @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Transaction> transactions = new ArrayList<>();
+    
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
+
     private LocalDateTime closedAt;
 }

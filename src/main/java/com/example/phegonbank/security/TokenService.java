@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.function.Function;
 
+
 @Service
 public class TokenService {
 
@@ -44,7 +45,11 @@ public class TokenService {
     }
 
     private <T> T extractClaims(String token, Function<Claims, T> claimsTFunction) {
-        return claimsTFunction.apply(Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload());
+        return claimsTFunction.
+                apply(Jwts.parser().verifyWith(key).
+                        build().
+                        parseSignedClaims(token)
+                        .getPayload());
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {

@@ -23,9 +23,12 @@ public class PasswordResetCode {
     @Column(unique = true, nullable = false)
     private String code;
 
+    
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
     private LocalDateTime expiryDate;
+    
+    @Builder.Default
     private boolean used = false;
 }

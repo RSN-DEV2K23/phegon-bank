@@ -130,7 +130,7 @@ public class AuthServiceImpl implements AuthService {
         String token = tokenService.generateToken(user.getEmail());
 
         LoginResponse loginResponse = LoginResponse.builder()
-                .roles(user.getRoles().stream().map(Role::getName).toList())
+                .roles(user.getRoles().stream().map(role -> role.getName()).toList())
                 .token(token)
                 .build();
 
