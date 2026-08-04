@@ -1,16 +1,16 @@
 package com.example.phegonbank.transaction.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.example.phegonbank.account.entity.Account;
+import com.example.phegonbank.enums.TransactionStatus;
+import com.example.phegonbank.enums.TransactionType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "transactions")
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,15 +28,16 @@ public class Transaction {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 20)
-    private TransactionType transactiontype;
+    private TransactionType transactionType;
 
     @Column(nullable = false)
-    private LocalDateTime transactionDate= LocalDateTime.now();
+    @Builder.Default
+    private LocalDateTime transactionDate = LocalDateTime.now();
     private String description;
 
     @Enumerated(EnumType.STRING)
     private TransactionStatus status;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;

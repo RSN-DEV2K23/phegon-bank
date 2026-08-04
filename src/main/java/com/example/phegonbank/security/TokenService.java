@@ -1,25 +1,22 @@
 package com.example.phegonbank.security;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.function.Function;
-
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import ch.qos.logback.core.subst.Token;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+import java.util.function.Function;
 
 @Service
-
 public class TokenService {
 
-    @value("${jwt.secret.string}")
+    @Value("${jwt.secret.string}")
     private String JWT_SECRET;
 
     @Value("${jwt.expiration.time}")
@@ -27,12 +24,13 @@ public class TokenService {
 
     private SecretKey key;
 
-    private void init(){
-        byte[] keyByte =JWT_SECRET.getBytes(StandardCharsets.UTF_8);
-        this.key = new SecretKeySpec(keyByte, algorithm:"HmacSHA256");
+    @PostConstruct
+    private void init() {
+        byte[] keyByte = JWT_SECRET.getBytes(StandardCharsets.UTF_8);
+        this.key = new SecretKeySpec(keyByte, "HmacSHA256");
     }
 
-    public String generateToken(String email){
+    public String generateToken(String email) {
         return Jwts.builder()
                 .subject(email)
                 .issuedAt(new Date(System.currentTimeMillis()))
@@ -41,21 +39,21 @@ public class TokenService {
                 .compact();
     }
 
-    public String getUsernameFromToken(String token){
+    public String getUsernameFromToken(String token) {
         return extractClaims(token, Claims::getSubject);
     }
 
-    private <T> extractClaims(String token, Function<Claims, T> claimsTFunction){
+    private <T> T extractClaims(String token, Function<Claims, T> claimsTFunction) {
         return claimsTFunction.apply(Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload());
     }
 
-    public boolean isTokenValid(String token, UserDetails userDetails){
-        final String username= getUsernameFromToken(token)
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(Token);
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        final String username = getUsernameFromToken(token);
+        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
-    private boolean isTokenExpired(String tokeString){
-        return extractClaims(token,Claims::getExpiration).before(new Date());
+    private boolean isTokenExpired(String token) {
+        Date expiration = extractClaims(token, Claims::getExpiration);
+        return expiration.before(new Date());
     }
-    
 }

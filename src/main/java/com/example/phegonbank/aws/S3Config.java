@@ -9,7 +9,6 @@ import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.S3Client;
 
 @Configuration
-
 public class S3Config {
 
     @Value("${aws.accessKeyId}")
@@ -21,17 +20,12 @@ public class S3Config {
     @Value("${aws.region}")
     private String region;
 
-    //@Value("${aws.bucketName}")
-    //private String bucketName;
-
     @Bean
     public S3Client s3Client() {
-        return new S3Client.Builder()
-                    .s3Client.region(Region.of(region))
-                    .credentialsProvider(StaticCredentialsProvider
-                            .create(AwsBasicCredentials.create(accessKey, secretKey)))
-                    .build();
+        return S3Client.builder()
+                .region(Region.of(region))
+                .credentialsProvider(StaticCredentialsProvider
+                        .create(AwsBasicCredentials.create(accessKey, secretKey)))
+                .build();
     }
-
-
 }

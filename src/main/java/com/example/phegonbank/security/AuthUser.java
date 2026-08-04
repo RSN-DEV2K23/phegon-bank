@@ -1,18 +1,14 @@
 package com.example.phegonbank.security;
 
-import java.util.Collection;
-import java.util.stream.Collectors;
-
+import com.example.phegonbank.auth_users.entity.User;
+import lombok.Builder;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.example.phegonbank.role.entity.Role;
-import com.example.phegonbank.user.entity.User;
-
-import jakarta.annotation.Nullable;
-import lombok.Builder;
-import lombok.Data;
+import java.util.Collection;
+import java.util.stream.Collectors;
 
 @Builder
 @Data
@@ -20,7 +16,7 @@ public class AuthUser implements UserDetails {
     private User user;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities(){
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         return user.getRoles()
                 .stream()
                 .map(role -> new SimpleGrantedAuthority(role.getName()))
@@ -28,13 +24,12 @@ public class AuthUser implements UserDetails {
     }
 
     @Override
-    public @Nullable String getPassword(){
+    public String getPassword() {
         return user.getPassword();
     }
 
     @Override
-    public String getUsername(){
-        return user.getUsername();
+    public String getUsername() {
+        return user.getEmail();
     }
-
 }

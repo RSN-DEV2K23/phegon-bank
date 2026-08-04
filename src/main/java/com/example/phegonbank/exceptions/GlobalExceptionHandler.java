@@ -1,5 +1,6 @@
 package com.example.phegonbank.exceptions;
 
+import com.example.phegonbank.res.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -7,11 +8,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Response<?>> handleAllUnknownExceptions(Exception ex) {
-        Response<?> response = new Response<>.builder()
-                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+        Response<?> response = Response.builder()
+                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .message(ex.getMessage())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -19,8 +20,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Response<?>> handleNotFoundExceptions(NotFoundException ex) {
-        Response<?> response = new Response<>.builder()
-                .status(HttpStatus.NOT_FOUND.value())
+        Response<?> response = Response.builder()
+                .statusCode(HttpStatus.NOT_FOUND.value())
                 .message(ex.getMessage())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
@@ -28,17 +29,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InsufficientBalanceException.class)
     public ResponseEntity<Response<?>> handleInsufficientBalanceExceptions(InsufficientBalanceException ex) {
-        Response<?> response = new Response<>.builder()
-                .status(HttpStatus.BAD_REQUEST.value())
+        Response<?> response = Response.builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
                 .message(ex.getMessage())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(InvalidAccountException.class)
-    public ResponseEntity<Response<?>> handleInvalidAccountExceptions(InvalidAccountException ex) {
-        Response<?> response = new Response<>.builder()
-                .status(HttpStatus.BAD_REQUEST.value())
+    @ExceptionHandler(InvalidTransactionException.class)
+    public ResponseEntity<Response<?>> handleInvalidTransactionExceptions(InvalidTransactionException ex) {
+        Response<?> response = Response.builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
                 .message(ex.getMessage())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
@@ -46,8 +47,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<Response<?>> handleBadRequestExceptions(BadRequestException ex) {
-        Response<?> response = new Response<>.builder()
-                .status(HttpStatus.BAD_REQUEST.value())
+        Response<?> response = Response.builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
                 .message(ex.getMessage())
                 .build();
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);

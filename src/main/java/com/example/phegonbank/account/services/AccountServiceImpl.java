@@ -2,6 +2,7 @@ package com.example.phegonbank.account.services;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
 
 import org.modelmapper.ModelMapper;
@@ -28,8 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-
-public class AccountServiceImpl  implements AccountService{
+public class AccountServiceImpl implements AccountService {
 
     private final AccountRepo accountRepo;
     private final UserService userService;
@@ -38,14 +38,17 @@ public class AccountServiceImpl  implements AccountService{
     private final Random random = new Random();
 
     @Override
-    public Account createAccount(AccountType accountType, User user){
+    public Account createAccount(AccountType accountType, User user) {
         log.info("Inside createAccount()");
+
+        String accountNumber = generateAccountNumber();
+
         Account account = Account.builder()
                 .accountNumber(accountNumber)
                 .accountType(accountType)
                 .currency(Currency.USD)
                 .balance(BigDecimal.ZERO)
-                .status(AccountStatus.ACTIVE)
+                .accountStatus(AccountStatus.ACTIVE)
                 .user(user)
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -70,7 +73,6 @@ public class AccountServiceImpl  implements AccountService{
                 .build();
     }
 
-
     @Override
     public Response<?> closeAccount(String accountNumber) {
 
@@ -85,7 +87,7 @@ public class AccountServiceImpl  implements AccountService{
         if (account.getBalance().compareTo(BigDecimal.ZERO) > 0) {
             throw new BadRequestException("Account balance must be zero before closing");
         }
-        account.setStatus(AccountStatus.CLOSED);
+        account.setAccountStatus(AccountStatus.CLOSED);
         account.setClosedAt(LocalDateTime.now());
         accountRepo.save(account);
 
@@ -93,22 +95,16 @@ public class AccountServiceImpl  implements AccountService{
                 .statusCode(HttpStatus.OK.value())
                 .message("Account closed successfully")
                 .build();
-
     }
-
 
     private String generateAccountNumber() {
         String accountNumber;
         do {
-            // Generate a random 10-digit number (from 0,000,000,000 to 9,999,999,999)
-            // and combine it with the "00" prefix.
-            accountNumber = "00" + (random.nextInt(0000000000) + 9999999999);
-
+            long num = Math.abs(random.nextLong()) % 9_000_000_000L + 1_000_000_000L;
+            accountNumber = "00" + num;
         } while (accountRepo.findByAccountNumber(accountNumber).isPresent());
 
-
-        log.info("account number generated {}", accountRepo);
+        log.info("account number generated {}", accountNumber);
         return accountNumber;
     }
-
 }

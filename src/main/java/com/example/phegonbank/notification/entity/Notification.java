@@ -1,24 +1,26 @@
 package com.example.phegonbank.notification.entity;
 
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.example.phegonbank.auth_users.entity.User;
+import com.example.phegonbank.enums.NotificationType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
+@Entity
 @Data
 @Builder
+@Table(name = "notifications")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Notification {
     @Id
-    @GeneratedValue(Strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String Subject;
+    private String subject;
     private String recipient;
     private String body;
 
@@ -28,6 +30,6 @@ public class Notification {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-    private final LocalDateTime createdAt = LocalDateTime.now();
-
+    @Builder.Default
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
