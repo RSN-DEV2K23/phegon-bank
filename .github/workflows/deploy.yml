@@ -8,17 +8,17 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Deploy to EC2
-        uses: appleboy/ssh-action@main
+        uses: appleboy/ssh-action@v3
         with:
           host: ${{ secrets.SSH_HOST }}
-          remote-user: ec2-user
-          KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          username: ec2-user
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/ec2-user/projects/phegon-bank
             git pull origin main
